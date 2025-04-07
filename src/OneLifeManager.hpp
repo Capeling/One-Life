@@ -11,6 +11,7 @@ class OneLifeManager {
 protected:
     bool m_isRunning;
     bool m_firstBootup;
+    bool m_hasDied;
 
     int m_collectedStars;
     int m_collectedMoons;
@@ -32,12 +33,15 @@ public:
     void startRun(RunType type);
     void endRun();
 
+    void playerDied();
+
     void toggleRun(RunType type);
 
     void resetStats();
     void resetSave();
 
     bool getIsRunning() { return m_isRunning; }
+    bool getHasDied() { return m_hasDied; }
     RunType getRunType() { return m_runType; }
     
     int getCollectedStars() { return m_collectedStars; }

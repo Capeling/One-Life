@@ -48,6 +48,7 @@ void OneLifeManager::resetStats() {
     
     m_completedDemons = 0;
 
+    m_hasDied = false;
     m_runType = RunType::None;
 }
 
@@ -93,12 +94,18 @@ void OneLifeManager::loadSaveData() {
         m_collectedDiamonds = mod->getSavedValue<int>("collected_diamonds");
         m_completedDemons = mod->getSavedValue<int>("completed_demons");
 
+        m_hasDied = mod->getSavedValue<bool>("has_died");
+
         m_runType = static_cast<RunType>(mod->getSavedValue<int>("run_type"));
     } else {
         resetStats();
     }
 
-    
+    if (m_hasDied) endRun();
+}
+
+void OneLifeManager::playerDied() {
+    m_hasDied = true;
 }
 
 void OneLifeManager::writeSaveData() {
@@ -107,13 +114,15 @@ void OneLifeManager::writeSaveData() {
     geode::log::info("Writing save data");
     
     mod->setSavedValue<bool>("is_running", m_isRunning);
-
+    
     if (m_isRunning) {
         mod->setSavedValue<int>("collected_stars", m_collectedStars);
         mod->setSavedValue<int>("collected_moons", m_collectedMoons);
         mod->setSavedValue<int>("collected_orbs", m_collectedOrbs);
         mod->setSavedValue<int>("collected_diamonds", m_collectedDiamonds);
         mod->setSavedValue<int>("completed_demons", m_completedDemons);
+
+        mod->setSavedValue<bool>("has_died", m_isRunning);
 
         mod->setSavedValue<int>("run_type", static_cast<int>(m_runType));
     } else {
