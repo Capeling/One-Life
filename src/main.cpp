@@ -1,6 +1,5 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/MenuLayer.hpp>
-#include <Geode/modify/AppDelegate.hpp>
 
 #include "OneLifePopup.hpp"
 #include "OneLifeManager.hpp"
@@ -14,9 +13,6 @@ $on_mod(Loaded) {
 $on_mod(DataSaved) {
     auto olm = OneLifeManager::get();
     olm->writeSaveData();
-
-    free(olm);
-    delete olm;
 }
 
 struct HookMenuLayer : geode::Modify<HookMenuLayer, MenuLayer> {

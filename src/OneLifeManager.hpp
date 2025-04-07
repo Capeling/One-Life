@@ -46,6 +46,12 @@ public:
     int getCollectedDiamonds() { return m_collectedDiamonds; }
     int getCompletedDemons() { return m_completedDemons; }
 
+    void incrementStars(int by) { m_collectedStars += by; };
+    void incrementMoons(int by) { m_collectedMoons += by; };
+    void incrementOrbs(int by) { m_collectedOrbs += by; };
+    void incrementDiamonds(int by) { m_collectedDiamonds += by; };
+    void incrementDemons(int by) { m_completedDemons += by; };
+
     bool getFromStartedRun() { return m_fromStartedRun; }
     void setFromStartedRun(bool V) { m_fromStartedRun = V; }
 

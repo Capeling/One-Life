@@ -103,7 +103,7 @@ void OneLifePopup::countDown() {
     auto colorOpacityAction = cocos2d::CCFadeTo::create(0.15f, 125);
 
     m_colorLayer->runAction(colorOpacityAction);
-    GameManager::get()->getActionManager()->addAction(MusicFadeOut::create(8.f), FMODAudioEngine::get(), false);
+    GameManager::get()->getActionManager()->addAction(MusicFadeOut::create(3.f), FMODAudioEngine::get(), false);
 
     auto combinedAction = cocos2d::CCSpawn::create(
         scaleEase,
