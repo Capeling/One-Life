@@ -8,8 +8,8 @@
 	},
 	"id": "capeling.one_life",
 	"name": "One Life",
-	"version": "v1.0.0",
+	"version": "v1.0.0-alpha.1",
 	"developer": "Capeling",
-	"description": "",
+	"description": "Roguelike for Geometry Dash.",
 	"early-load": true
 }

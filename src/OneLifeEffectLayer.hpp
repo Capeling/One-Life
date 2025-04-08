@@ -16,7 +16,8 @@ protected:
     int m_counterStage = 3;
     
     cocos2d::CCLabelBMFont* m_counterLabel = nullptr;
-    
+    cocos2d::CCSprite* m_endSprite = nullptr;
+
     bool init(OneLifeEffectType type);
     
     void registerWithTouchDispatcher() override {
@@ -28,6 +29,7 @@ protected:
     }
     
     void endEffect();
+    void playEndSFX();
     void toggleRunState();
     void countDownDecrease();
 };

@@ -9,7 +9,6 @@ $on_mod(Loaded) {
     olm->init();
 }
 
-
 $on_mod(DataSaved) {
     auto olm = OneLifeManager::get();
     olm->writeSaveData();

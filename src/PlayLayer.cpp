@@ -27,4 +27,17 @@ struct HookPlayLayer : geode::Modify<HookPlayLayer, PlayLayer> {
 
         PlayLayer::resetLevel();
     }
+
+    void levelComplete() {
+        auto olm = OneLifeManager::get();
+        auto director = cocos2d::CCDirector::sharedDirector();
+
+        geode::log::debug("PlayLayer::levelComplete() called");
+        
+        if (olm->getIsRunning()) {
+            olm->giveStatsFromLevel(this->m_level);
+        }
+
+        PlayLayer::levelComplete();
+    }
 };

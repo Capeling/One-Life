@@ -4,7 +4,7 @@
 
 OneLifePopup* OneLifePopup::create() {
     auto ret = new OneLifePopup();
-    if (ret->initAnchored(315, 250, "geode.loader/GE_square03.png")) {
+    if (ret->initAnchored(320, 265, "geode.loader/GE_square03.png")) {
         ret->autorelease();
         return ret;
     }
@@ -23,21 +23,24 @@ bool OneLifePopup::setup() {
         m_startBtn = geode::cocos::CCMenuItemExt::createSpriteExtraWithFrameName("GJ_starBtnMod_001.png", 1.f, [this](auto sender){
             toggleRunBtn(true);
         });
+        
+        m_statLabel = cocos2d::CCLabelBMFont::create(olm->getBestStatString().c_str(), "bigFont.fnt");
 
         m_runStateLabel = cocos2d::CCLabelBMFont::create("not in a run", "goldFont.fnt");
     } else {
         m_runStateLabel = cocos2d::CCLabelBMFont::create("in a run", "goldFont.fnt");
         
-        m_statLabel = cocos2d::CCLabelBMFont::create(olm->getStatsString().c_str(), "bigFont.fnt");
-        m_statLabel->setAlignment(cocos2d::kCCTextAlignmentCenter);
-        m_statLabel->setScale(0.6f);
-        m_mainLayer->addChildAtPosition(m_statLabel, geode::Anchor::Center);
+        m_statLabel = cocos2d::CCLabelBMFont::create(olm->getCurrentStatString().c_str(), "bigFont.fnt");
         
         m_startBtn = geode::cocos::CCMenuItemExt::createSpriteExtraWithFrameName("GJ_starBtn2_001.png", 1.f, [this](auto sender){
             toggleRunBtn(false);
         });
         
     }
+
+    m_statLabel->setAlignment(cocos2d::kCCTextAlignmentCenter);
+    m_statLabel->setScale(0.6f);
+    m_mainLayer->addChildAtPosition(m_statLabel, geode::Anchor::Center);
     
     m_buttonMenu->addChildAtPosition(m_startBtn, geode::Anchor::Bottom, ccp(0, 40));
     m_runStateLabel->setScale(0.6f);

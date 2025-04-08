@@ -17,6 +17,11 @@ protected:
     int m_collectedMoons;
     int m_collectedOrbs;
     int m_collectedDiamonds;
+
+    std::vector<int> m_completedIDS = {};
+    std::vector<int> m_bestRun = {};
+
+    float m_currentExp;
     
     int m_completedDemons;
 
@@ -40,6 +45,8 @@ public:
     void resetStats();
     void resetSave();
 
+    void saveBestRun();
+
     bool getIsRunning() { return m_isRunning; }
     bool getHasDied() { return m_hasDied; }
     RunType getRunType() { return m_runType; }
@@ -56,10 +63,17 @@ public:
     void incrementDiamonds(int by) { m_collectedDiamonds += by; };
     void incrementDemons(int by) { m_completedDemons += by; };
 
+    void giveStatsFromLevel(GJGameLevel* level);
+
+    float calculateExp(int stars, int moons, int orbs, int diamonds, int demons);
+
     bool getFromStartedRun() { return m_fromStartedRun; }
     void setFromStartedRun(bool V) { m_fromStartedRun = V; }
 
-    std::string getStatsString();
+    std::string getStatString(float exp, int stars, int moons, int orbs, int diamonds, int demons);
+
+    std::string getCurrentStatString();
+    std::string getBestStatString();
 
     static OneLifeManager* get();
 

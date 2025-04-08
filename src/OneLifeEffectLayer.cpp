@@ -74,7 +74,92 @@ bool OneLifeEffectLayer::init(OneLifeEffectType type) {
     
         m_counterLabel->runAction(sequenceAction);
     } else if (type == OneLifeEffectType::End) {
-        endEffect();
+        m_endSprite = cocos2d::CCSprite::createWithSpriteFrameName("d_heart01_001.png");
+        m_endSprite->setColor({ 255, 0, 0 });
+        m_endSprite->setScale(0.f);
+        m_endSprite->setOpacity(0);
+        addChildAtPosition(m_endSprite, geode::Anchor::Center, ccp(0, 0), false);
+
+        cocos2d::CCScaleTo* scaleAction = cocos2d::CCScaleTo::create(3, 2.f);
+        cocos2d::CCEaseOut* scaleEase = cocos2d::CCEaseOut::create(scaleAction, 2.f);
+
+        cocos2d::CCFadeIn* fadeAction = cocos2d::CCFadeIn::create(1.f);
+
+        cocos2d::CCDelayTime* delayShake = cocos2d::CCDelayTime::create(0.5f);
+
+        cocos2d::CCMoveBy* shakeAction1 = cocos2d::CCMoveBy::create(0.1f, { 1, 2 });
+        cocos2d::CCMoveBy* shakeAction2 = cocos2d::CCMoveBy::create(0.1f, { -1, -2 });
+        cocos2d::CCMoveBy* shakeAction3 = cocos2d::CCMoveBy::create(0.1f, { 2, 0.5 });
+        cocos2d::CCMoveBy* shakeAction4 = cocos2d::CCMoveBy::create(0.1f, { -2, -0.5 });
+        
+        cocos2d::CCSequence* shakeSequence = cocos2d::CCSequence::create(
+            shakeAction1,
+            shakeAction2,
+            shakeAction3,
+            shakeAction4,
+            0
+        );
+        
+        cocos2d::CCRepeat* repeatShake = cocos2d::CCRepeat::create(
+            shakeSequence,
+            6
+        );
+        
+        cocos2d::CCSequence* shakeSequenceDelay = cocos2d::CCSequence::create(
+            delayShake,
+            repeatShake,
+            0
+        );
+
+        cocos2d::CCSpawn* combinedAction = cocos2d::CCSpawn::create(
+            scaleEase,
+            fadeAction,
+            shakeSequenceDelay,
+            0
+        );
+
+        cocos2d::CCScaleBy* endScaleAction = cocos2d::CCScaleBy::create(0.5f, 1.7f);
+        cocos2d::CCEaseInOut* endScaleEase = cocos2d::CCEaseInOut::create(endScaleAction, 2.f);
+        
+        cocos2d::CCScaleTo* endScaleAction2 = cocos2d::CCScaleTo::create(1.f, 0.f);
+        cocos2d::CCEaseInOut* endScaleEase2 = cocos2d::CCEaseInOut::create(endScaleAction2, 2.f);
+
+        cocos2d::CCFadeOut* endFadeAction = cocos2d::CCFadeOut::create(1.f);
+
+        cocos2d::CCSpawn* endActionCombined = cocos2d::CCSpawn::create(
+            endScaleEase2,
+            endFadeAction,
+            0
+        );
+
+        cocos2d::CCDelayTime* endDelay = cocos2d::CCDelayTime::create(0.1f);
+        cocos2d::CCCallFunc* playEndSFX = cocos2d::CCCallFunc::create(this, callfunc_selector(OneLifeEffectLayer::playEndSFX));
+
+        cocos2d::CCSequence* endScaleSequence = cocos2d::CCSequence::create(
+            endScaleEase,
+            endActionCombined,
+            endDelay,
+            0
+        );
+
+        cocos2d::CCTintTo* endTintAction = cocos2d::CCTintTo::create(0.4f, 55, 55, 55);
+
+        cocos2d::CCSpawn* endCombinedAction = cocos2d::CCSpawn::create(
+            endScaleSequence,
+            endTintAction,
+            playEndSFX,
+            0
+        );
+
+        cocos2d::CCSequence* fullSequence = cocos2d::CCSequence::create(
+            combinedAction,
+            endCombinedAction,
+            endAction,
+            0
+        );
+
+        m_endSprite->runAction(fullSequence);
+
     } else {
         FLAlertLayer::create(
             "ERROR!",
@@ -102,16 +187,20 @@ void OneLifeEffectLayer::countDownDecrease() {
     FMODAudioEngine::sharedEngine()->playEffect(path);
 }
 
+void OneLifeEffectLayer::playEndSFX() {
+    auto path = MusicDownloadManager::sharedState()->pathForSFX(4290);
+    FMODAudioEngine::sharedEngine()->playEffect(path);
+}
+
 void OneLifeEffectLayer::endEffect() {
     toggleRunState();
 
     int sfx = 566;
 
-    if (m_type == OneLifeEffectType::End)
-        sfx = 4290;
-
-    auto path = MusicDownloadManager::sharedState()->pathForSFX(sfx);
-    FMODAudioEngine::sharedEngine()->playEffect(path);
+    if (m_type != OneLifeEffectType::End) {
+        auto path = MusicDownloadManager::sharedState()->pathForSFX(sfx);
+        FMODAudioEngine::sharedEngine()->playEffect(path);
+    }
 
     FMODAudioEngine::get()->stopAllMusic(true);
     FMODAudioEngine::get()->stopAllActions();
@@ -129,11 +218,14 @@ void OneLifeEffectLayer::toggleRunState() {
     
     olm->setFromStartedRun(true);
     olm->toggleRun(RunType::Mixed);
-    director->replaceScene(cocos2d::CCTransitionFade::create(0.5f, MenuLayer::scene(false)));
+    if (auto playLayer = PlayLayer::get())
+        playLayer->onQuit();
+    else
+        director->replaceScene(cocos2d::CCTransitionFade::create(0.5f, MenuLayer::scene(false)));
 
     this->setKeypadEnabled(false);
     this->setTouchEnabled(false);
-    this->removeFromParentAndCleanup(true);
+    // this->removeFromParentAndCleanup(true);
 
     cocos2d::CCTouchDispatcher::get()->unregisterForcePrio(this);
 }
