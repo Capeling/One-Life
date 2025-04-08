@@ -1,6 +1,7 @@
+#pragma once
 #include <Geode/Geode.hpp>
 
-#include "PopupWithCorners.hpp"
+#include <ui/PopupWithCorners.hpp>
 
 class OneLifePopup : public PopupWithCorners<> {
 public:

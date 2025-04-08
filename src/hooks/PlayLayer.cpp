@@ -1,7 +1,7 @@
 #include <Geode/modify/PlayLayer.hpp>
 
-#include "OneLifeManager.hpp"
-#include "OneLifeEffectLayer.hpp"
+#include <OneLifeManager.hpp>
+#include <ui/OneLifeEffectLayer.hpp>
 
 struct HookPlayLayer : geode::Modify<HookPlayLayer, PlayLayer> {
     virtual void destroyPlayer(PlayerObject* p0, GameObject* p1) {

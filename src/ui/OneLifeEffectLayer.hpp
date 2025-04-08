@@ -1,3 +1,4 @@
+#pragma once
 #include <Geode/Geode.hpp>
 
 enum class OneLifeEffectType {

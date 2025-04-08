@@ -1,3 +1,4 @@
+#pragma once
 #include <Geode/Geode.hpp>
 
 enum class RunType {
@@ -19,6 +20,8 @@ protected:
     int m_collectedDiamonds;
 
     std::vector<int> m_completedIDS = {};
+
+    // std::vector<int> m_currentRun = {};
     std::vector<int> m_bestRun = {};
 
     float m_currentExp;

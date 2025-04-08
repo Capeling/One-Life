@@ -1,4 +1,4 @@
-#include "MusicFadeOut.hpp"
+#include <nodes/MusicFadeOut.hpp>
 
 using namespace geode::prelude;
 

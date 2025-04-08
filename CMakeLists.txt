@@ -21,6 +21,8 @@ endif()
 file(GLOB_RECURSE SOURCES src/*.cpp ${OS_SOURCES})
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
 
+target_include_directories(${PROJECT_NAME} PUBLIC src)
+
 if (NOT DEFINED ENV{GEODE_SDK})
     message(FATAL_ERROR "Unable to find Geode SDK! Please define GEODE_SDK environment variable to point to Geode")
 else()

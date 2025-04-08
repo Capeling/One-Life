@@ -1,8 +1,9 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/MenuLayer.hpp>
 
-#include "OneLifePopup.hpp"
-#include "OneLifeManager.hpp"
+#include <ui/OneLifePopup.hpp>
+#include <OneLifeManager.hpp>
+#include <OneLifeConstants.hpp>
 
 $on_mod(Loaded) {
     auto olm = OneLifeManager::get();
@@ -23,7 +24,9 @@ struct HookMenuLayer : geode::Modify<HookMenuLayer, MenuLayer> {
     auto director = cocos2d::CCDirector::sharedDirector();
     auto winSize = director->getWinSize();
     
-    auto spr = cocos2d::CCSprite::createWithSpriteFrameName(olm->getIsRunning() ? "GJ_starBtn2_001.png" : "GJ_starBtnMod_001.png");
+    auto spr = cocos2d::CCSprite::createWithSpriteFrameName(
+        olm->getIsRunning() ? OneLifeConstants::SPRITE_END : OneLifeConstants::SPRITE_START
+    );
 
     auto btn = geode::cocos::CCMenuItemExt::createSpriteExtra(spr, [](auto sender) {
         OneLifePopup::create()->show();
@@ -34,7 +37,7 @@ struct HookMenuLayer : geode::Modify<HookMenuLayer, MenuLayer> {
         menu->addChild(btn);
         menu->updateLayout();
     } else {
-        geode::log::error("Failed to get \'right side menu\', One Life will not load its button.");
+        geode::log::error(OneLifeConstants::ERROR_UNKNOWN_NODE, "right-side-menu");
     }
     
     if (olm->getFromStartedRun()) {

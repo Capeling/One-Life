@@ -1,6 +1,7 @@
-#include "OneLifeEffectLayer.hpp"
-#include "MusicFadeOut.hpp"
-#include "OneLifeManager.hpp"
+#include <ui/OneLifeEffectLayer.hpp>
+#include <nodes/MusicFadeOut.hpp>
+#include <OneLifeManager.hpp>
+#include <OneLifeConstants.hpp>
 
 OneLifeEffectLayer* OneLifeEffectLayer::create(OneLifeEffectType type) {
     auto ret = new OneLifeEffectLayer();
@@ -121,14 +122,15 @@ bool OneLifeEffectLayer::init(OneLifeEffectType type) {
         cocos2d::CCScaleBy* endScaleAction = cocos2d::CCScaleBy::create(0.5f, 1.7f);
         cocos2d::CCEaseInOut* endScaleEase = cocos2d::CCEaseInOut::create(endScaleAction, 2.f);
         
-        cocos2d::CCScaleTo* endScaleAction2 = cocos2d::CCScaleTo::create(1.f, 0.f);
+        cocos2d::CCScaleTo* endScaleAction2 = cocos2d::CCScaleTo::create(0.75f, 0.f);
         cocos2d::CCEaseInOut* endScaleEase2 = cocos2d::CCEaseInOut::create(endScaleAction2, 2.f);
 
         cocos2d::CCFadeOut* endFadeAction = cocos2d::CCFadeOut::create(1.f);
+        cocos2d::CCEaseInOut* endFadeEase = cocos2d::CCEaseInOut::create(endFadeAction, 2.f);
 
         cocos2d::CCSpawn* endActionCombined = cocos2d::CCSpawn::create(
             endScaleEase2,
-            endFadeAction,
+            endFadeEase,
             0
         );
 
@@ -162,9 +164,9 @@ bool OneLifeEffectLayer::init(OneLifeEffectType type) {
 
     } else {
         FLAlertLayer::create(
-            "ERROR!",
-            "Invalid effect, something has gone horribly wrong!\nContact Capeling on discord for help.",
-            "OK"
+            OneLifeConstants::GENERIC_ERROR,
+            OneLifeConstants::ERROR_INVALID_EFFECT,
+            OneLifeConstants::GENERIC_OK
         )->show();
     }
     
@@ -204,12 +206,17 @@ void OneLifeEffectLayer::endEffect() {
 
     FMODAudioEngine::get()->stopAllMusic(true);
     FMODAudioEngine::get()->stopAllActions();
-
+    
     GameManager::get()->getActionManager()->addAction(cocos2d::CCSequence::create(
         cocos2d::CCDelayTime::create(0.5f),
         cocos2d::CCCallFunc::create(GameManager::get(), callfunc_selector(GameManager::fadeInMenuMusic)),
         0
     ), GameManager::get(), false);
+
+    this->setKeypadEnabled(false);
+    this->setTouchEnabled(false);
+    this->removeFromParentAndCleanup(true);
+    cocos2d::CCTouchDispatcher::get()->unregisterForcePrio(this);
 }
 
 void OneLifeEffectLayer::toggleRunState() {
@@ -219,13 +226,8 @@ void OneLifeEffectLayer::toggleRunState() {
     olm->setFromStartedRun(true);
     olm->toggleRun(RunType::Mixed);
     if (auto playLayer = PlayLayer::get())
-        playLayer->onQuit();
-    else
-        director->replaceScene(cocos2d::CCTransitionFade::create(0.5f, MenuLayer::scene(false)));
+        playLayer->onExit();
 
-    this->setKeypadEnabled(false);
-    this->setTouchEnabled(false);
-    // this->removeFromParentAndCleanup(true);
+    director->replaceScene(cocos2d::CCTransitionFade::create(0.5f, MenuLayer::scene(false)));
 
-    cocos2d::CCTouchDispatcher::get()->unregisterForcePrio(this);
 }
