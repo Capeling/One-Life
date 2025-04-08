@@ -75,7 +75,7 @@ bool OneLifeEffectLayer::init(OneLifeEffectType type) {
     
         m_counterLabel->runAction(sequenceAction);
     } else if (type == OneLifeEffectType::End) {
-        m_endSprite = cocos2d::CCSprite::createWithSpriteFrameName("d_heart01_001.png");
+        m_endSprite = cocos2d::CCSprite::createWithSpriteFrameName(OneLifeConstants::SPRITE_HEART);
         m_endSprite->setColor({ 255, 0, 0 });
         m_endSprite->setScale(0.f);
         m_endSprite->setOpacity(0);
@@ -144,7 +144,7 @@ bool OneLifeEffectLayer::init(OneLifeEffectType type) {
             0
         );
 
-        cocos2d::CCTintTo* endTintAction = cocos2d::CCTintTo::create(0.4f, 55, 55, 55);
+        cocos2d::CCTintTo* endTintAction = cocos2d::CCTintTo::create(0.4f, 75, 75, 75);
 
         cocos2d::CCSpawn* endCombinedAction = cocos2d::CCSpawn::create(
             endScaleSequence,
@@ -185,22 +185,20 @@ void OneLifeEffectLayer::countDownDecrease() {
     m_counterLabel->setOpacity(255);
     m_counterLabel->setColor({ 255, 255, 255 });
 
-    auto path = MusicDownloadManager::sharedState()->pathForSFX(4292);
+    auto path = MusicDownloadManager::sharedState()->pathForSFX(OneLifeConstants::SFX_COUNTDOWN_POP);
     FMODAudioEngine::sharedEngine()->playEffect(path);
 }
 
 void OneLifeEffectLayer::playEndSFX() {
-    auto path = MusicDownloadManager::sharedState()->pathForSFX(4290);
+    auto path = MusicDownloadManager::sharedState()->pathForSFX(OneLifeConstants::SFX_END);
     FMODAudioEngine::sharedEngine()->playEffect(path);
 }
 
 void OneLifeEffectLayer::endEffect() {
     toggleRunState();
 
-    int sfx = 566;
-
     if (m_type != OneLifeEffectType::End) {
-        auto path = MusicDownloadManager::sharedState()->pathForSFX(sfx);
+        auto path = MusicDownloadManager::sharedState()->pathForSFX(OneLifeConstants::SFX_START);
         FMODAudioEngine::sharedEngine()->playEffect(path);
     }
 

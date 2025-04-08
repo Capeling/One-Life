@@ -162,8 +162,8 @@ float OneLifeManager::calculateExp(int stars, int moons, int orbs, int diamonds,
 
     exp += stars * 0.5f;
     exp += moons * 0.5f;
-    exp += diamonds * 0.1f;
-    exp += orbs * 0.005f;
+    exp += diamonds * 0.05f;
+    exp += orbs * 0.001f;
     exp += demons;
 
     return exp;

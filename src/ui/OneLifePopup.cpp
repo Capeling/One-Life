@@ -5,7 +5,7 @@
 
 OneLifePopup* OneLifePopup::create() {
     auto ret = new OneLifePopup();
-    if (ret->initAnchored(320, 265, "geode.loader/GE_square03.png")) {
+    if (ret->initAnchored(320, 265, OneLifeConstants::POPUP_SPRITE_BACKGROUND)) {
         ret->autorelease();
         return ret;
     }
@@ -17,7 +17,7 @@ bool OneLifePopup::setup() {
     auto olm = OneLifeManager::get();
     auto director = cocos2d::CCDirector::get();
     
-    setTitle("One Life", "bigFont.fnt");
+    setTitle(OneLifeConstants::POPUP_TITLE, "bigFont.fnt");
     addCorners(Corner::Blue, Corner::Blue);
 
     bool running = olm->getIsRunning();
