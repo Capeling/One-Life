@@ -9,10 +9,12 @@ public:
 
 protected:
     CCMenuItemSpriteExtra* m_startBtn = nullptr;
+    CCMenuItemSpriteExtra* m_infoBtn = nullptr;
     
     cocos2d::CCLabelBMFont* m_runStateLabel = nullptr;
     cocos2d::CCLabelBMFont* m_statLabel = nullptr;
-    
+    cocos2d::CCLabelBMFont* m_versionLabel = nullptr;
+
     bool setup();
     void toggleRunBtn(bool type);
 

@@ -10,6 +10,9 @@ struct OneLifeConstants {
     static constexpr const char* POPUP_END_RUN = "End Run";
     static constexpr const char* POPUP_START_RUN_DESC = "Are you sure you want to <cl>start a run?</c>";
     static constexpr const char* POPUP_END_RUN_DESC = "Are you sure you want to <cr>end the run?</c>";
+
+    static constexpr const char* INFO_TITLE = "Info";
+    static constexpr const char* INFO_DESC = "This is the one life help";
     
     static constexpr const char* GENERIC_ERROR = "ERROR!";
     static constexpr const char* GENERIC_CANCEL = "Cancel";
@@ -17,7 +20,9 @@ struct OneLifeConstants {
     static constexpr const char* GENERIC_OK = "OK";
 
     static constexpr const char* SPRITE_HEART = "d_heart01_001.png";
+    static constexpr const char* SPRITE_HEART_OVERLAY = "d_heart01_color_001.png";
     static constexpr const char* SPRITE_START = "GJ_starBtnMod_001.png";
+    static constexpr const char* SPRITE_INFO = "GJ_infoIcon_001.png";
     static constexpr const char* SPRITE_END = "GJ_starBtn2_001.png";
 
     static constexpr const char* ERROR_INVALID_EFFECT = "Invalid effect, something has gone horribly wrong!\nContact Capeling on discord for help.";

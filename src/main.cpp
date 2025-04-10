@@ -42,6 +42,7 @@ struct HookMenuLayer : geode::Modify<HookMenuLayer, MenuLayer> {
     
     if (olm->getFromStartedRun()) {
         olm->setFromStartedRun(false);
+        setKeyboardEnabled(true);
 
         if (!olm->getIsRunning()) {
             auto popup = OneLifePopup::create();

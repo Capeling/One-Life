@@ -22,21 +22,21 @@ bool OneLifePopup::setup() {
 
     bool running = olm->getIsRunning();
 
-    if (!running) {
-        
-        m_statLabel = cocos2d::CCLabelBMFont::create(olm->getBestStatString().c_str(), "bigFont.fnt");
-        
-        m_runStateLabel = cocos2d::CCLabelBMFont::create(OneLifeConstants::POPUP_NOT_IN_RUN, "goldFont.fnt");
-    } else {
-        m_runStateLabel = cocos2d::CCLabelBMFont::create(OneLifeConstants::POPUP_IN_RUN, "goldFont.fnt");
-        
-        m_statLabel = cocos2d::CCLabelBMFont::create(olm->getCurrentStatString().c_str(), "bigFont.fnt"); 
-    }
-    
+    m_statLabel = cocos2d::CCLabelBMFont::create(
+        running ? olm->getCurrentStatString().c_str() : olm->getBestStatString().c_str(),
+        "bigFont.fnt"
+    );
     m_statLabel->setAlignment(cocos2d::kCCTextAlignmentCenter);
     m_statLabel->setScale(0.6f);
-    m_mainLayer->addChildAtPosition(m_statLabel, geode::Anchor::Center);
+    m_mainLayer->addChildAtPosition(m_statLabel, geode::Anchor::Center, ccp(0, 10));
 
+    m_runStateLabel = cocos2d::CCLabelBMFont::create(
+        running ? OneLifeConstants::POPUP_IN_RUN : OneLifeConstants::POPUP_NOT_IN_RUN,
+        "goldFont.fnt"
+    );
+    m_runStateLabel->setScale(0.6f);
+    m_mainLayer->addChildAtPosition(m_runStateLabel, geode::Anchor::Top, ccp(0, -47));
+    
     m_startBtn = geode::cocos::CCMenuItemExt::createSpriteExtraWithFrameName(
         running ? OneLifeConstants::SPRITE_END : OneLifeConstants::SPRITE_START,
         1.f, 
@@ -44,10 +44,52 @@ bool OneLifePopup::setup() {
             toggleRunBtn(!running);
         }
     );
+    m_buttonMenu->addChildAtPosition(m_startBtn, geode::Anchor::Bottom, ccp(0, 51));
+
+    m_infoBtn = geode::cocos::CCMenuItemExt::createSpriteExtraWithFrameName(
+        OneLifeConstants::SPRITE_INFO,
+        0.8f,
+        [this](auto sender) {
+            FLAlertLayer::create(OneLifeConstants::INFO_TITLE, OneLifeConstants::INFO_DESC, OneLifeConstants::GENERIC_OK)->show();
+        }
+    );
+    m_buttonMenu->addChildAtPosition(m_infoBtn, geode::Anchor::TopRight, ccp(-20, -20));
+
+    m_versionLabel = cocos2d::CCLabelBMFont::create(geode::Mod::get()->getVersion().toVString().c_str(), "chatFont.fnt");
+    m_versionLabel->setScale(0.5f);
+    m_versionLabel->setOpacity(255 / 2);
+    m_mainLayer->addChildAtPosition(m_versionLabel, geode::Anchor::Bottom, ccp(0, 15));
+
+    // auto size = cocos2d::CCSize{300.f, 60.f};
+    // auto bg = cocos2d::extension::CCScale9Sprite::create("square02b_001.png");
+    // bg->setColor({0,0,0});
+    // bg->setOpacity(100);
+    // bg->setContentSize(size);
     
-    m_buttonMenu->addChildAtPosition(m_startBtn, geode::Anchor::Bottom, ccp(0, 40));
-    m_runStateLabel->setScale(0.6f);
-    m_mainLayer->addChildAtPosition(m_runStateLabel, geode::Anchor::Top, ccp(0, -50));
+    // auto msg = CCTextInputNode::create(size.width, size.height - 10.f, "Message (optional)", "Thonburi", 24, 0);
+    // msg->setMaxLabelLength(1000);
+    // msg->addTextArea(TextArea::create("", "chatFont.fnt", 1.f, size.width - 40.0f, {0.5, 0.5}, 25.0f, true));
+    // msg->m_isChatFont = true;
+    // msg->setUserObject("fix-text-input", cocos2d::CCBool::create(true));
+    
+    // m_mainLayer->addChildAtPosition(bg, geode::Anchor::Center);
+    // m_mainLayer->addChildAtPosition(msg, geode::Anchor::Center);
+
+    // bool isLevelInfoActive = false;
+
+    // LevelInfoLayer* levelInfoLayer = nullptr;
+
+    // auto scene = cocos2d::CCScene::get();
+    // for (int i = 0; i < scene->getChildrenCount(); i++) {
+    //     geode::log::debug("aaaa");
+    //     auto node = scene->getChildren()->objectAtIndex(i);
+
+    //     if (auto levelInfoNode = geode::cast::typeinfo_cast<LevelInfoLayer*>(node)) {
+    //         isLevelInfoActive = true;
+    //         levelInfoLayer = levelInfoNode;
+    //         break;
+    //     }
+    // }
     
     return true;
 }

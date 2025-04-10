@@ -81,6 +81,9 @@ bool OneLifeEffectLayer::init(OneLifeEffectType type) {
         m_endSprite->setOpacity(0);
         addChildAtPosition(m_endSprite, geode::Anchor::Center, ccp(0, 0), false);
 
+        auto endOverlay = cocos2d::CCSprite::createWithSpriteFrameName(OneLifeConstants::SPRITE_HEART_OVERLAY);
+        m_endSprite->addChildAtPosition(endOverlay, geode::Anchor::Center);
+
         cocos2d::CCScaleTo* scaleAction = cocos2d::CCScaleTo::create(3, 2.f);
         cocos2d::CCEaseOut* scaleEase = cocos2d::CCEaseOut::create(scaleAction, 2.f);
 
