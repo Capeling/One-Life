@@ -4,6 +4,17 @@
 #include <ui/OneLifeEffectLayer.hpp>
 
 struct HookPlayLayer : geode::Modify<HookPlayLayer, PlayLayer> {
+    
+    void pauseGame(bool p0) {
+        auto olm = OneLifeManager::get();
+
+        if (olm->getIsRunning() && olm->getHasDied()) {
+            return;
+        }
+
+        PlayLayer::pauseGame(p0);
+    }
+
     virtual void destroyPlayer(PlayerObject* p0, GameObject* p1) {
         PlayLayer::destroyPlayer(p0, p1);
 
@@ -32,8 +43,6 @@ struct HookPlayLayer : geode::Modify<HookPlayLayer, PlayLayer> {
         auto olm = OneLifeManager::get();
         auto director = cocos2d::CCDirector::sharedDirector();
 
-        geode::log::debug("PlayLayer::levelComplete() called");
-        
         if (olm->getIsRunning()) {
             olm->giveStatsFromLevel(this->m_level);
         }

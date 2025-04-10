@@ -12,8 +12,8 @@ struct OneLifeConstants {
     static constexpr const char* POPUP_END_RUN_DESC = "Are you sure you want to <cr>end the run?</c>";
     
     static constexpr const char* GENERIC_ERROR = "ERROR!";
-    static constexpr const char* GENERIC_CANCEL = "CANCEL";
-    static constexpr const char* GENERIC_CONFIRM = "YES";
+    static constexpr const char* GENERIC_CANCEL = "Cancel";
+    static constexpr const char* GENERIC_CONFIRM = "Yes";
     static constexpr const char* GENERIC_OK = "OK";
 
     static constexpr const char* SPRITE_HEART = "d_heart01_001.png";
