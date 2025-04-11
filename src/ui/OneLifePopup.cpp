@@ -5,7 +5,7 @@
 
 OneLifePopup* OneLifePopup::create() {
     auto ret = new OneLifePopup();
-    if (ret->initAnchored(320, 265, OneLifeConstants::POPUP_SPRITE_BACKGROUND)) {
+    if (ret->initAnchored(330, 285, OneLifeConstants::POPUP_SPRITE_BACKGROUND)) {
         ret->autorelease();
         return ret;
     }
@@ -26,9 +26,20 @@ bool OneLifePopup::setup() {
         running ? olm->getCurrentStatString().c_str() : olm->getBestStatString().c_str(),
         "bigFont.fnt"
     );
-    m_statLabel->setAlignment(cocos2d::kCCTextAlignmentCenter);
+    m_statLabel->setAlignment(cocos2d::CCTextAlignment::kCCTextAlignmentCenter);
     m_statLabel->setScale(0.6f);
-    m_mainLayer->addChildAtPosition(m_statLabel, geode::Anchor::Center, ccp(0, 10));
+    m_mainLayer->addChildAtPosition(m_statLabel, geode::Anchor::Center, ccp(0, 17));
+    
+    // m_statArea = TextArea::create(running ? olm->getCurrentStatString() : olm->getBestStatString(),
+    //     "bigFont.fnt",
+    //     0.6f,
+    //     250,
+    //     { 0.5f, 0.5f },
+    //     25,
+    //     false
+    // );
+    // m_statArea->setScale(0.6f);
+    // m_mainLayer->addChildAtPosition(m_statArea, geode::Anchor::Center, ccp(0, 17));
 
     m_runStateLabel = cocos2d::CCLabelBMFont::create(
         running ? OneLifeConstants::POPUP_IN_RUN : OneLifeConstants::POPUP_NOT_IN_RUN,
@@ -44,7 +55,7 @@ bool OneLifePopup::setup() {
             toggleRunBtn(!running);
         }
     );
-    m_buttonMenu->addChildAtPosition(m_startBtn, geode::Anchor::Bottom, ccp(0, 51));
+    m_buttonMenu->addChildAtPosition(m_startBtn, geode::Anchor::Bottom, ccp(0, 67));
 
     m_infoBtn = geode::cocos::CCMenuItemExt::createSpriteExtraWithFrameName(
         OneLifeConstants::SPRITE_INFO,
@@ -55,10 +66,17 @@ bool OneLifePopup::setup() {
     );
     m_buttonMenu->addChildAtPosition(m_infoBtn, geode::Anchor::TopRight, ccp(-20, -20));
 
-    m_versionLabel = cocos2d::CCLabelBMFont::create(geode::Mod::get()->getVersion().toVString().c_str(), "chatFont.fnt");
+    std::string versionString = fmt::format("Mod Version: {}\nMod Commit: {}\nMod Build Type: {}",
+        geode::Mod::get()->getVersion().toVString().c_str(),
+        OneLifeConstants::MOD_COMMIT,
+        OneLifeConstants::MOD_BUILD_TYPE
+    );
+
+    m_versionLabel = cocos2d::CCLabelBMFont::create(versionString.c_str(), "chatFont.fnt");
     m_versionLabel->setScale(0.5f);
+    m_versionLabel->setAlignment(cocos2d::CCTextAlignment::kCCTextAlignmentCenter);
     m_versionLabel->setOpacity(255 / 2);
-    m_mainLayer->addChildAtPosition(m_versionLabel, geode::Anchor::Bottom, ccp(0, 15));
+    m_mainLayer->addChildAtPosition(m_versionLabel, geode::Anchor::Bottom, ccp(0, 23));
 
     // auto size = cocos2d::CCSize{300.f, 60.f};
     // auto bg = cocos2d::extension::CCScale9Sprite::create("square02b_001.png");

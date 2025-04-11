@@ -13,6 +13,7 @@ protected:
     
     cocos2d::CCLabelBMFont* m_runStateLabel = nullptr;
     cocos2d::CCLabelBMFont* m_statLabel = nullptr;
+    // TextArea* m_statArea = nullptr;
     cocos2d::CCLabelBMFont* m_versionLabel = nullptr;
 
     bool setup();

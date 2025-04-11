@@ -30,18 +30,6 @@ if (NOT ONELIFE_COMMIT_HASH)
 	set(ONELIFE_COMMIT_HASH "(?)")
 endif()
 
-execute_process(
-	COMMAND git describe --always --dirty
-	WORKING_DIRECTORY ${GEODE_BINDINGS_REPO_PATH}
-	OUTPUT_VARIABLE ONELIFE_BINDINGS_COMMIT_HASH
-	OUTPUT_STRIP_TRAILING_WHITESPACE
-	ERROR_QUIET
-)
-
-if (NOT ONELIFE_BINDINGS_COMMIT_HASH)
-	set(ONELIFE_BINDINGS_COMMIT_HASH "(?)")
-endif()
-
 configure_file(src/OneLifeConstants.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/src/OneLifeConstants.hpp)
 
 file(GLOB_RECURSE SOURCES src/*.cpp ${OS_SOURCES})
@@ -50,11 +38,11 @@ add_library(${PROJECT_NAME} SHARED ${SOURCES})
 target_include_directories(${PROJECT_NAME} PUBLIC src)
 
 if (NOT DEFINED ENV{GEODE_SDK})
-    message(FATAL_ERROR "Unable to find Geode SDK! Please define GEODE_SDK environment variable to point to Geode")
+message(FATAL_ERROR "Unable to find Geode SDK! Please define GEODE_SDK environment variable to point to Geode")
 else()
-    message(STATUS "Found Geode: $ENV{GEODE_SDK}")
+message(STATUS "Found Geode: $ENV{GEODE_SDK}")
 endif()
-
 add_subdirectory($ENV{GEODE_SDK} ${CMAKE_CURRENT_BINARY_DIR}/geode)
+
 
 setup_geode_mod(${PROJECT_NAME})
