@@ -1,7 +1,6 @@
 # TODO
 
 ## Important (Before Release Changes)
-- Revamp save system
 - ~~Better PlayLayer exiting~~
 - Way to show the player that they earned stats for the run
 - Mod icon
@@ -14,4 +13,6 @@
 - ~~Code refactor~~
 
 ## Other (Not Needed But Would Be Nice)
+- Badges for best exp gained
 - Potential new name?
+- Revamp save system

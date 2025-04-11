@@ -31,4 +31,7 @@ struct OneLifeConstants {
     static constexpr int SFX_START = 566;
     static constexpr int SFX_END = 4290;
     static constexpr int SFX_COUNTDOWN_POP = 4292;
+
+    static constexpr const char* BINDINGS_COMMIT = "@ONELIFE_BINDINGS_COMMIT_HASH@";
+    static constexpr const char* MOD_COMMIT = "@ONELIFE_COMMIT_HASH@";
 };

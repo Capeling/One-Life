@@ -62,3 +62,6 @@ build-*/
 # CLion
 .idea/
 /cmake-build-*/
+
+# Codegenned files
+src/OneLifeConstants.hpp
