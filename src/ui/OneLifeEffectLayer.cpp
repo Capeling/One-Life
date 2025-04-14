@@ -30,31 +30,29 @@ bool OneLifeEffectLayer::init(OneLifeEffectType type) {
     
     this->setOpacity(0);
     this->runAction(colorOpacityAction);
-    GameManager::get()->getActionManager()->addAction(FadeMusicAction::create(OneLifeConstants::MAX_COUNTDOWN_START, FadeMusicDirection::FadeOut), FMODAudioEngine::get(), false);
+    GameManager::get()->getActionManager()->addAction(FadeMusicAction::create(OneLifeConstants::COUNTDOWN_START, FadeMusicDirection::FadeOut), FMODAudioEngine::get(), false);
     // cocos2d::CCScene::get()->runAction(FadeMusicAction::create(6.f, FadeMusicDirection::FadeOut));
     
     auto endAction = cocos2d::CCCallFunc::create(this, callfunc_selector(OneLifeEffectLayer::endEffect));
     
     if (type == OneLifeEffectType::Start) {
-        m_counterStage = OneLifeConstants::MAX_COUNTDOWN_START;
+        m_counterStage = OneLifeConstants::COUNTDOWN_START;
 
         m_counterLabel = cocos2d::CCLabelBMFont::create(fmt::format("{}", m_counterStage).c_str(), "bigFont.fnt");
         m_counterLabel->setScale(0.f);
         addChildAtPosition(m_counterLabel, geode::Anchor::Center, ccp(0, 0), false);
         
         auto scaleAction = cocos2d::CCScaleTo::create(1.f, 2);
-        auto scaleEase = cocos2d::CCEaseInOut::create(scaleAction, 2.f);
+        auto scaleEase = cocos2d::CCEaseSineOut::create(scaleAction);
         
-        auto opacityAction = cocos2d::CCFadeTo::create(1.f, 0);
-        auto opacityEase = cocos2d::CCEaseInOut::create(opacityAction, 2.f);
+        auto opacityAction = cocos2d::CCFadeOut::create(1.f);
         
         auto tintAction = cocos2d::CCTintTo::create(1.f, 255, 0, 0);
-        auto tintEase = cocos2d::CCEaseInOut::create(tintAction, 2.f);
         
         auto combinedAction = cocos2d::CCSpawn::create(
             scaleEase,
-            opacityEase,
-            tintEase,
+            opacityAction,
+            tintAction,
             0
         );
         
@@ -65,13 +63,11 @@ bool OneLifeEffectLayer::init(OneLifeEffectType type) {
             decreaseAction,
             0
         );
-        auto repeatAction = cocos2d::CCRepeat::create(countdownSequenceAction, OneLifeConstants::MAX_COUNTDOWN_START - 1);
+        auto repeatAction = cocos2d::CCRepeat::create(countdownSequenceAction, OneLifeConstants::COUNTDOWN_START - 1);
         
         auto sequenceAction = cocos2d::CCSequence::create(
             repeatAction,
-            
             combinedAction,
-            
             endAction,
             0
         );

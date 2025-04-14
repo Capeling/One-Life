@@ -78,6 +78,39 @@ bool OneLifePopup::setup() {
     m_versionLabel->setOpacity(255 / 2);
     m_mainLayer->addChildAtPosition(m_versionLabel, geode::Anchor::Bottom, ccp(0, 23));
 
+
+#ifdef DEBUG_ENABLED
+    auto instantSpr = cocos2d::CCSprite::createWithSpriteFrameName("GJ_editBtn_001.png");
+    instantSpr->setColor(OneLifeConstants::COLOR_HEART_INACTIVE);
+    instantSpr->setOpacity(150);
+    instantSpr->setScale(.45f);
+
+    auto instantBtn = geode::cocos::CCMenuItemExt::createSpriteExtra(
+        instantSpr,
+        [this, running](auto sender){
+            auto olm = OneLifeManager::get();
+            auto director = cocos2d::CCDirector::get();
+            
+            if (!olm->getIsRunning()) {
+                auto path = MusicDownloadManager::sharedState()->pathForSFX(OneLifeConstants::SFX_START);
+                FMODAudioEngine::sharedEngine()->playEffect(path);
+            } else {
+                auto path = MusicDownloadManager::sharedState()->pathForSFX(OneLifeConstants::SFX_END);
+                FMODAudioEngine::sharedEngine()->playEffect(path);
+            }
+
+            olm->setFromStartedRun(true);
+            olm->toggleRun(RunType::Mixed);
+            if (auto playLayer = PlayLayer::get())
+                playLayer->onExit();
+        
+            director->replaceScene(cocos2d::CCTransitionFade::create(0.5f, MenuLayer::scene(false)));
+        }
+    );
+    m_buttonMenu->addChildAtPosition(instantBtn, geode::Anchor::Bottom, ccp(45, 67));
+
+#endif
+
     // auto size = cocos2d::CCSize{300.f, 60.f};
     // auto bg = cocos2d::extension::CCScale9Sprite::create("square02b_001.png");
     // bg->setColor({0,0,0});

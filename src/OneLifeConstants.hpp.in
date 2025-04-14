@@ -38,7 +38,7 @@ struct OneLifeConstants {
     static constexpr cocos2d::ccColor3B COLOR_HEART_ACTIVE = {255, 0 ,0};
     static constexpr cocos2d::ccColor3B COLOR_HEART_INACTIVE = {95, 85 ,85};
     
-    static constexpr int MAX_COUNTDOWN_START = 5;
+    static constexpr int COUNTDOWN_START = 5;
     static constexpr int MAX_END_TIME = 3;
 
     static constexpr const char* MOD_COMMIT = "@ONELIFE_COMMIT_HASH@";
