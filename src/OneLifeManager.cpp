@@ -1,5 +1,4 @@
 #include <OneLifeManager.hpp>
-#include <OneLifeConstants.hpp>
 
 bool OneLifeManager::init() {
     auto mod = geode::Mod::get();

@@ -14,19 +14,19 @@ public:
     void addToScene();
 protected:
     OneLifeEffectType m_type = OneLifeEffectType::None;
-    int m_counterStage = 3;
+    int m_counterStage = -1;
     
     cocos2d::CCLabelBMFont* m_counterLabel = nullptr;
     cocos2d::CCSprite* m_endSprite = nullptr;
 
     bool init(OneLifeEffectType type);
-    
-    void registerWithTouchDispatcher() override {
-        cocos2d::CCTouchDispatcher::get()->addTargetedDelegate(this, -500, true);
-    }
-    
+
     ~OneLifeEffectLayer() override {
         cocos2d::CCTouchDispatcher::get()->unregisterForcePrio(this);
+    }
+
+    void registerWithTouchDispatcher() override {
+        cocos2d::CCTouchDispatcher::get()->addTargetedDelegate(this, -500, true);
     }
     
     void endEffect();

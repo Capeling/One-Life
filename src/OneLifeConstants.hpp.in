@@ -1,16 +1,18 @@
 #pragma once
 
+#include <Geode/DefaultInclude.hpp>
+
 struct OneLifeConstants {
     static constexpr const char* POPUP_TITLE = "One Life";
     static constexpr const char* POPUP_IN_RUN = "in a run";
     static constexpr const char* POPUP_NOT_IN_RUN = "not in a run";
     static constexpr const char* POPUP_SPRITE_BACKGROUND = "geode.loader/GE_square03.png";
-
+    
     static constexpr const char* POPUP_START_RUN = "Start Run";
     static constexpr const char* POPUP_END_RUN = "End Run";
     static constexpr const char* POPUP_START_RUN_DESC = "Are you sure you want to <cg>start a run?</c>";
     static constexpr const char* POPUP_END_RUN_DESC = "Are you sure you want to <cr>end the run?</c>";
-
+    
     static constexpr const char* INFO_TITLE = "Info";
     static constexpr const char* INFO_DESC = "<cl>All levels completed</c> will give you its correct stats, <cr>no matter</c> if you have already completed the level.";
     
@@ -18,20 +20,26 @@ struct OneLifeConstants {
     static constexpr const char* GENERIC_CANCEL = "Cancel";
     static constexpr const char* GENERIC_CONFIRM = "Yes";
     static constexpr const char* GENERIC_OK = "OK";
-
+    
     static constexpr const char* SPRITE_HEART = "d_heart01_001.png";
     static constexpr const char* SPRITE_HEART_OVERLAY = "d_heart01_color_001.png";
-
+    
     static constexpr const char* SPRITE_START = "GJ_starBtnMod_001.png";
     static constexpr const char* SPRITE_INFO = "GJ_infoIcon_001.png";
     static constexpr const char* SPRITE_END = "GJ_starBtn2_001.png";
-
+    
     static constexpr const char* ERROR_INVALID_EFFECT = "Invalid effect, something has gone horribly wrong!\nContact Capeling on discord for help.";
     static constexpr const char* ERROR_UNKNOWN_NODE = "Failed to get \'{}\'.";
-
+    
     static constexpr int SFX_START = 566;
     static constexpr int SFX_END = 4290;
     static constexpr int SFX_COUNTDOWN_POP = 4292;
+    
+    static constexpr cocos2d::ccColor3B COLOR_HEART_ACTIVE = {255, 0 ,0};
+    static constexpr cocos2d::ccColor3B COLOR_HEART_INACTIVE = {95, 85 ,85};
+    
+    static constexpr int MAX_COUNTDOWN_START = 5;
+    static constexpr int MAX_END_TIME = 3;
 
     static constexpr const char* MOD_COMMIT = "@ONELIFE_COMMIT_HASH@";
     static constexpr const char* MOD_BUILD_TYPE = "@CMAKE_BUILD_TYPE@";

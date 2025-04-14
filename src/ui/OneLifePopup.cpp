@@ -66,7 +66,7 @@ bool OneLifePopup::setup() {
     );
     m_buttonMenu->addChildAtPosition(m_infoBtn, geode::Anchor::TopRight, ccp(-20, -20));
 
-    std::string versionString = fmt::format("Mod Version: {}\nMod Commit: {}\nMod Build Type: {}",
+    std::string versionString = fmt::format("Version: {}\nGit Commit: {}\nBuild Type: {}",
         geode::Mod::get()->getVersion().toVString().c_str(),
         OneLifeConstants::MOD_COMMIT,
         OneLifeConstants::MOD_BUILD_TYPE

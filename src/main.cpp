@@ -32,7 +32,10 @@ struct HookMenuLayer : geode::Modify<HookMenuLayer, MenuLayer> {
     auto overlay = cocos2d::CCSprite::createWithSpriteFrameName(OneLifeConstants::SPRITE_HEART_OVERLAY);
     heart->addChildAtPosition(overlay, geode::Anchor::Center);
 
-    heart->setColor({ 255, 0, 0 });
+    if (olm->getIsRunning())
+        heart->setColor(OneLifeConstants::COLOR_HEART_ACTIVE);
+    else
+        heart->setColor(OneLifeConstants::COLOR_HEART_INACTIVE);
 
     auto spr = geode::CircleButtonSprite::create(
         heart,
@@ -55,15 +58,13 @@ struct HookMenuLayer : geode::Modify<HookMenuLayer, MenuLayer> {
 
     if (olm->getFromStartedRun()) {
         olm->setFromStartedRun(false);
-        setKeyboardEnabled(true);
 
-        if (!olm->getIsRunning()) {
-            auto popup = OneLifePopup::create();
-            setKeyboardEnabled(false);
-            popup->m_scene = this;
-            popup->m_noElasticity = true;
-            popup->show();
-        }
+        // if (!olm->getIsRunning()) {
+        //     auto popup = OneLifePopup::create();
+        //     popup->m_scene = director->scene
+        //     popup->m_noElasticity = true;
+        //     popup->show();
+        // }
     }
     
     return true;
