@@ -11,7 +11,6 @@ set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 project(OneLife VERSION 1.0.0)
 
 option(ENABLE_DEBUG "Enable debug" OFF)
-option(ENABLE_INFO "Enable info" OFF)
 
 if(ENABLE_DEBUG)
     add_compile_definitions(DEBUG_ENABLED=1)
