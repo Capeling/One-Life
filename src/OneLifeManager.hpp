@@ -14,19 +14,19 @@ protected:
     bool m_firstBootup;
     bool m_hasDied;
 
-    int m_collectedStars;
-    int m_collectedMoons;
-    int m_collectedOrbs;
-    int m_collectedDiamonds;
+    // int m_collectedStars;
+    // int m_collectedMoons;
+    // int m_collectedOrbs;
+    // int m_collectedDiamonds;
+    // int m_completedDemons;
 
     std::vector<int> m_completedIDS = {};
 
-    // std::vector<int> m_currentRun = {};
+    std::vector<int> m_currentRun = {};
     std::vector<int> m_bestRun = {};
 
     float m_currentExp;
     
-    int m_completedDemons;
 
     RunType m_runType;
 
@@ -54,17 +54,17 @@ public:
     bool getHasDied() { return m_hasDied; }
     RunType getRunType() { return m_runType; }
     
-    int getCollectedStars() { return m_collectedStars; }
-    int getCollectedMoons() { return m_collectedMoons; }
-    int getCollectedOrbs() { return m_collectedOrbs; }
-    int getCollectedDiamonds() { return m_collectedDiamonds; }
-    int getCompletedDemons() { return m_completedDemons; }
+    int getCollectedStars() { return m_currentRun[0]; }
+    int getCollectedMoons() { return m_currentRun[1]; }
+    int getCollectedOrbs() { return m_currentRun[2]; }
+    int getCollectedDiamonds() { return m_currentRun[3]; }
+    int getCompletedDemons() { return m_currentRun[4]; }
 
-    void incrementStars(int by) { m_collectedStars += by; };
-    void incrementMoons(int by) { m_collectedMoons += by; };
-    void incrementOrbs(int by) { m_collectedOrbs += by; };
-    void incrementDiamonds(int by) { m_collectedDiamonds += by; };
-    void incrementDemons(int by) { m_completedDemons += by; };
+    void incrementStars(int by) { m_currentRun[0] += by; };
+    void incrementMoons(int by) { m_currentRun[1] += by; };
+    void incrementOrbs(int by) { m_currentRun[2] += by; };
+    void incrementDiamonds(int by) { m_currentRun[3] += by; };
+    void incrementDemons(int by) { m_currentRun[4] += by; };
 
     void giveStatsFromLevel(GJGameLevel* level);
 

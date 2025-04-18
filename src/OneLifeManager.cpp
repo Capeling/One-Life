@@ -43,13 +43,8 @@ void OneLifeManager::endRun() {
 }
 
 void OneLifeManager::resetStats() {
-    m_collectedStars = 0;
-    m_collectedMoons = 0;
-    m_collectedOrbs = 0;
-    m_collectedDiamonds = 0;
-    
-    m_completedDemons = 0;
-
+    m_currentRun.clear();
+    m_currentRun = { 0, 0, 0, 0, 0};
     m_completedIDS.clear();
 
     m_hasDied = false;
@@ -63,24 +58,18 @@ void OneLifeManager::resetSave() {
 
     mod->setSavedValue<bool>("has_died", false);
     mod->setSavedValue<bool>("is_running", false);
-    
-    mod->setSavedValue<int>("collected_stars", 0);
-    mod->setSavedValue<int>("collected_moons", 0);
-    mod->setSavedValue<int>("collected_orbs", 0);
-    mod->setSavedValue<int>("collected_diamonds", 0);
-    mod->setSavedValue<int>("completed_demons", 0);
-    mod->setSavedValue<std::vector<int>>("completed_ids", {});
 
+    mod->setSavedValue<std::vector<int>>("current_run", {});
+    
     mod->setSavedValue<int>("run_type", -1);
 }
 
 void OneLifeManager::initiateSaveData() {
     auto mod = geode::Mod::get();
-
+    
     geode::log::info("First bootup, initializing save data");
-
     mod->setSavedValue<std::vector<int>>("best_run", {});
-
+    
     resetSave();
     
     loadSaveData();
@@ -106,12 +95,12 @@ void OneLifeManager::giveStatsFromLevel(GJGameLevel* level) {
 
         incrementDiamonds(gsm->getAwardedDiamondsForLevel(level));
         incrementOrbs(gsm->getBaseCurrencyForLevel(level));
-        
+
         if (level->m_demon.value() > 0)
-            incrementDemons(level->m_demon.value());
+            incrementDemons(level->getAverageDifficulty() * level->m_demon.value());
     }
 
-    m_currentExp = calculateExp(m_collectedStars, m_collectedMoons, m_collectedOrbs, m_collectedDiamonds, m_completedDemons);
+    m_currentExp = calculateExp(m_currentRun[0], m_currentRun[1], m_currentRun[2], m_currentRun[3], m_currentRun[4]);
 } 
 
 void OneLifeManager::loadSaveData() {
@@ -129,12 +118,7 @@ void OneLifeManager::loadSaveData() {
     mod->setSavedValue<bool>("has_booted", true);
 
     if (m_isRunning) {
-        m_collectedStars = mod->getSavedValue<int>("collected_stars");
-        m_collectedMoons = mod->getSavedValue<int>("collected_moons");
-        m_collectedOrbs = mod->getSavedValue<int>("collected_orbs");
-        m_collectedDiamonds = mod->getSavedValue<int>("collected_diamonds");
-        m_completedDemons = mod->getSavedValue<int>("completed_demons");
-        m_completedIDS = mod->getSavedValue<std::vector<int>>("completed_ids");
+        m_currentRun = mod->getSavedValue<std::vector<int>>("current_run");
         
         m_hasDied = mod->getSavedValue<bool>("has_died");
         
@@ -170,22 +154,14 @@ float OneLifeManager::calculateExp(int stars, int moons, int orbs, int diamonds,
 
 void OneLifeManager::saveBestRun() {
     if (m_bestRun.size() == 0) {
-        m_bestRun.push_back(m_collectedStars);
-        m_bestRun.push_back(m_collectedMoons);
-        m_bestRun.push_back(m_collectedOrbs);
-        m_bestRun.push_back(m_collectedDiamonds);
-        m_bestRun.push_back(m_completedDemons);
+        m_bestRun = m_currentRun;
     } else {
-        if (m_collectedStars > m_bestRun[0])
-            m_bestRun[0] = m_collectedStars;
-        if (m_collectedMoons > m_bestRun[1])
-            m_bestRun[1] = m_collectedMoons;
-        if (m_collectedOrbs > m_bestRun[2])
-            m_bestRun[2] = m_collectedOrbs;
-        if (m_collectedDiamonds > m_bestRun[3])
-            m_bestRun[3] = m_collectedDiamonds;
-        if (m_completedDemons > m_bestRun[4])
-            m_bestRun[4] = m_completedDemons;
+        int i = 0;
+        for (int val : m_bestRun) {
+            if (val < m_currentRun[i])
+                m_bestRun[i] = m_currentRun[i];
+            i++;
+        }
     }
 }
 
@@ -197,12 +173,7 @@ void OneLifeManager::writeSaveData() {
     mod->setSavedValue<bool>("is_running", m_isRunning);
     
     if (m_isRunning) {
-        mod->setSavedValue<int>("collected_stars", m_collectedStars);
-        mod->setSavedValue<int>("collected_moons", m_collectedMoons);
-        mod->setSavedValue<int>("collected_orbs", m_collectedOrbs);
-        mod->setSavedValue<int>("collected_diamonds", m_collectedDiamonds);
-        mod->setSavedValue<int>("completed_demons", m_completedDemons);
-
+        mod->setSavedValue<std::vector<int>>("current_run", m_currentRun);
         mod->setSavedValue<std::vector<int>>("completed_ids", m_completedIDS);
 
         mod->setSavedValue<bool>("has_died", m_hasDied);
@@ -233,8 +204,8 @@ std::string OneLifeManager::getStatString(float exp, int stars, int moons, int o
 
 std::string OneLifeManager::getCurrentStatString() {
     return getStatString(
-        calculateExp(m_collectedStars, m_collectedMoons, m_collectedOrbs, m_collectedDiamonds, m_completedDemons),
-        m_collectedStars, m_collectedMoons, m_collectedOrbs, m_collectedDiamonds, m_completedDemons
+        calculateExp(m_currentRun[0], m_currentRun[1], m_currentRun[2], m_currentRun[3], m_currentRun[4]),
+        m_currentRun[0], m_currentRun[1], m_currentRun[2], m_currentRun[3], m_currentRun[4]
             );
 }
 std::string OneLifeManager::getBestStatString() {

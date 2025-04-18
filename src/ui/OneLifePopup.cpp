@@ -57,16 +57,18 @@ bool OneLifePopup::setup() {
     );
     m_buttonMenu->addChildAtPosition(m_startBtn, geode::Anchor::Bottom, ccp(0, 67));
 
+    // FLAlertLayerProtocol* delegate, char const* title, gd::string desc, char const* btn1, char const* btn2, float width, bool scroll, float height, float textScale
+
     m_infoBtn = geode::cocos::CCMenuItemExt::createSpriteExtraWithFrameName(
         OneLifeConstants::SPRITE_INFO,
         0.8f,
         [this](auto sender) {
-            FLAlertLayer::create(OneLifeConstants::INFO_TITLE, OneLifeConstants::INFO_DESC, OneLifeConstants::GENERIC_OK)->show();
+            FLAlertLayer::create(nullptr, OneLifeConstants::INFO_TITLE, OneLifeConstants::INFO_DESC, OneLifeConstants::GENERIC_OK, nullptr, 410.f, false, 350.f, .9f)->show();
         }
     );
     m_buttonMenu->addChildAtPosition(m_infoBtn, geode::Anchor::TopRight, ccp(-20, -20));
 
-    std::string versionString = fmt::format("Version: {}\nGit Commit: {}\nBuild Type: {}",
+    std::string versionString = fmt::format("{}\n{}\n{}",
         geode::Mod::get()->getVersion().toVString().c_str(),
         OneLifeConstants::MOD_COMMIT,
         OneLifeConstants::MOD_BUILD_TYPE

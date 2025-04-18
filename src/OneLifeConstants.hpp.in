@@ -14,7 +14,7 @@ struct OneLifeConstants {
     static constexpr const char* POPUP_END_RUN_DESC = "Are you sure you want to <cr>end the run?</c>";
     
     static constexpr const char* INFO_TITLE = "Info";
-    static constexpr const char* INFO_DESC = "<cl>All levels completed</c> will give you its correct stats, <cr>no matter</c> if you have already completed the level.";
+    static constexpr const char* INFO_DESC = "<cl>One Life</c> is like a roguelike for Geometry Dash, when you start a run all stats you gain <cl>from levels only</c> are counted towards your run stats.\n\nYour run stats are calculated into an <cg>exp</c> value <cl>which is the main way you should base your run level on</c>.\n\nDepending on the difficulty of a demon level you will gain more demon points, e.g. <cl>an extreme demon will give you 5 demon points while an easy demon will only give you 1</c>.";
     
     static constexpr const char* GENERIC_ERROR = "ERROR!";
     static constexpr const char* GENERIC_CANCEL = "Cancel";
@@ -24,6 +24,8 @@ struct OneLifeConstants {
     static constexpr const char* SPRITE_HEART = "d_heart01_001.png";
     static constexpr const char* SPRITE_HEART_OVERLAY = "d_heart01_color_001.png";
     
+    static constexpr const char* SPRITE_DEBUG = "GJ_editBtn_001.png";
+
     static constexpr const char* SPRITE_START = "GJ_starBtnMod_001.png";
     static constexpr const char* SPRITE_INFO = "GJ_infoIcon_001.png";
     static constexpr const char* SPRITE_END = "GJ_starBtn2_001.png";
