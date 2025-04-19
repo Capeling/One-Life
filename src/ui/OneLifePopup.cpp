@@ -110,7 +110,6 @@ bool OneLifePopup::setup() {
         }
     );
     m_buttonMenu->addChildAtPosition(instantBtn, geode::Anchor::Bottom, ccp(45, 67));
-
 #endif
 
     // auto size = cocos2d::CCSize{300.f, 60.f};
