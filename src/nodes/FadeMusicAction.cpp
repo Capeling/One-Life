@@ -33,7 +33,7 @@ bool FadeMusicAction::init(float d, FadeMusicDirection dir, const std::unordered
     // if direction is fade out, initialOrTarget stores initial
     // if direction is fade in, initialOrTarget stores target
     if (dir == FadeMusicDirection::FadeOut) {
-        for (auto& [id, thing] : FMODAudioEngine::get()->m_musicChannels) {
+        for (auto& [id, thing] : FMODAudioEngine::get()->m_fmodMusic) {
             auto channel = FMODAudioEngine::get()->getActiveMusicChannel(id);
             m_initialOrTargetPitches[id] = 0.f;
             channel->getPitch(&m_initialOrTargetPitches[id]);
@@ -63,7 +63,7 @@ void FadeMusicAction::update(float time) {
     // the curve fits into 0 - 1 in the y axis, multiplying will scale it from
     // 0 to initial or target
     // just plug it into desmos or something
-    for (auto& [id, thing] : FMODAudioEngine::get()->m_musicChannels) {
+    for (auto& [id, thing] : FMODAudioEngine::get()->m_fmodMusic) {
         auto channel = FMODAudioEngine::get()->getActiveMusicChannel(id);
         float multipliedEased = eased * m_initialOrTargetPitches[id];
         channel->setPitch(multipliedEased);

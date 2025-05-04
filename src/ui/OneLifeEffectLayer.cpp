@@ -240,9 +240,12 @@ void OneLifeEffectLayer::toggleRunState() {
     
     olm->setFromStartedRun(true);
     olm->toggleRun(RunType::Mixed);
-    if (auto playLayer = PlayLayer::get())
-        playLayer->onExit();
 
-    director->replaceScene(cocos2d::CCTransitionFade::create(0.5f, MenuLayer::scene(false)));
+    if (auto playLayer = PlayLayer::get()) {
+        playLayer->resetAudio();
+        FMODAudioEngine::get()->unloadAllEffects();
+    }
+
+        director->replaceScene(cocos2d::CCTransitionFade::create(0.5f, MenuLayer::scene(false)));
 
 }

@@ -20,7 +20,7 @@ struct HookPlayLayer : geode::Modify<HookPlayLayer, PlayLayer> {
 
         auto olm = OneLifeManager::get();
 
-        if (!olm->getIsRunning()) return;
+        if (!olm->getIsRunning() || m_level->m_levelType == GJLevelType::Editor) return;
 
         if (p1 != this->m_anticheatSpike && !olm->getHasDied()) {
             olm->playerDied();
