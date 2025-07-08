@@ -33,4 +33,5 @@ protected:
     void playEndSFX();
     void toggleRunState();
     void countDownDecrease();
+    void removeMe();
 };

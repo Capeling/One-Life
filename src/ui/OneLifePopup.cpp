@@ -164,6 +164,7 @@ void OneLifePopup::toggleRunBtn(bool type) {
 
                 auto olel = OneLifeEffectLayer::create(effectType);
                 olel->addToScene();
+                onClose(nullptr);
 
             }
         }

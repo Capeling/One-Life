@@ -1,7 +1,9 @@
 #include <ui/OneLifeEffectLayer.hpp>
+
 #include <nodes/FadeMusicAction.hpp>
 #include <OneLifeManager.hpp>
 #include <OneLifeConstants.hpp>
+#include <hooks/MenuLayer.hpp>
 
 OneLifeEffectLayer* OneLifeEffectLayer::create(OneLifeEffectType type) {
     auto ret = new OneLifeEffectLayer();
@@ -33,7 +35,12 @@ bool OneLifeEffectLayer::init(OneLifeEffectType type) {
     GameManager::get()->getActionManager()->addAction(FadeMusicAction::create(OneLifeConstants::COUNTDOWN_START, FadeMusicDirection::FadeOut), FMODAudioEngine::get(), false);
     // cocos2d::CCScene::get()->runAction(FadeMusicAction::create(6.f, FadeMusicDirection::FadeOut));
     
-    auto endAction = cocos2d::CCCallFunc::create(this, callfunc_selector(OneLifeEffectLayer::endEffect));
+    auto endCallAction = cocos2d::CCCallFunc::create(this, callfunc_selector(OneLifeEffectLayer::endEffect));
+
+    auto endAction = cocos2d::CCSequence::create(
+        endCallAction,
+        0
+    );
     
     if (type == OneLifeEffectType::Start) {
         m_counterStage = OneLifeConstants::COUNTDOWN_START;
@@ -227,11 +234,21 @@ void OneLifeEffectLayer::endEffect() {
         cocos2d::CCCallFunc::create(GameManager::get(), callfunc_selector(GameManager::fadeInMenuMusic)),
         0
     ), GameManager::get(), false);
-    
+
+    cocos2d::CCFadeTo* fadeOutBG = cocos2d::CCFadeTo::create(.5f, 0.f);
+    cocos2d::CCCallFunc* removeMeFunc = cocos2d::CCCallFunc::create(this, callfunc_selector(OneLifeEffectLayer::removeMe));
+
+    this->runAction(cocos2d::CCSequence::create(
+        fadeOutBG,
+        removeMeFunc,
+        0
+    ));
+}
+
+void OneLifeEffectLayer::removeMe() {
     this->setKeypadEnabled(false);
     this->setTouchEnabled(false);
     this->removeFromParentAndCleanup(true);
-    
 }
 
 void OneLifeEffectLayer::toggleRunState() {
@@ -244,8 +261,11 @@ void OneLifeEffectLayer::toggleRunState() {
     if (auto playLayer = PlayLayer::get()) {
         playLayer->resetAudio();
         FMODAudioEngine::get()->unloadAllEffects();
+        director->replaceScene(cocos2d::CCTransitionFade::create(0.5f, MenuLayer::scene(false)));
     }
 
-        director->replaceScene(cocos2d::CCTransitionFade::create(0.5f, MenuLayer::scene(false)));
+    if (auto menuLayer = MenuLayer::get()) {
+        static_cast<HookMenuLayer*>(menuLayer)->updateOneLifeBtn();
+    }
 
 }
