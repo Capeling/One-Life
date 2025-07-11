@@ -43,7 +43,7 @@ if (NOT ONELIFE_COMMIT_HASH)
 	set(ONELIFE_COMMIT_HASH "(?)")
 endif()
 
-configure_file(src/OneLifeConstants.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/src/OneLifeConstants.hpp)
+configure_file(src/BuildConstants.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/src/BuildConstants.hpp)
 
 if (NOT DEFINED ENV{GEODE_SDK})
 message(FATAL_ERROR "Unable to find Geode SDK! Please define GEODE_SDK environment variable to point to Geode")

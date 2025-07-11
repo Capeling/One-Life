@@ -32,8 +32,7 @@ bool OneLifeEffectLayer::init(OneLifeEffectType type) {
     
     this->setOpacity(0);
     this->runAction(colorOpacityAction);
-    GameManager::get()->getActionManager()->addAction(FadeMusicAction::create(OneLifeConstants::COUNTDOWN_START, FadeMusicDirection::FadeOut), FMODAudioEngine::get(), false);
-    // cocos2d::CCScene::get()->runAction(FadeMusicAction::create(6.f, FadeMusicDirection::FadeOut));
+    GameManager::get()->getActionManager()->addAction(FadeMusicAction::create(OneLifeConstants::COUNTDOWN_START, FadeMusicDirection::FadeOut, false), FMODAudioEngine::get(), false);
     
     auto endCallAction = cocos2d::CCCallFunc::create(this, callfunc_selector(OneLifeEffectLayer::endEffect));
 
@@ -226,14 +225,8 @@ void OneLifeEffectLayer::endEffect() {
         FMODAudioEngine::sharedEngine()->playEffect(path);
     }
     
-    FMODAudioEngine::get()->stopAllMusic(true);
     FMODAudioEngine::get()->stopAllActions();
-    
-    GameManager::get()->getActionManager()->addAction(cocos2d::CCSequence::create(
-        cocos2d::CCDelayTime::create(0.5f),
-        cocos2d::CCCallFunc::create(GameManager::get(), callfunc_selector(GameManager::fadeInMenuMusic)),
-        0
-    ), GameManager::get(), false);
+    GameManager::get()->getActionManager()->addAction(FadeMusicAction::create(OneLifeConstants::COUNTDOWN_START * .5f, FadeMusicDirection::FadeIn, false), FMODAudioEngine::get(), false);
 
     cocos2d::CCFadeTo* fadeOutBG = cocos2d::CCFadeTo::create(.5f, 0.f);
     cocos2d::CCCallFunc* removeMeFunc = cocos2d::CCCallFunc::create(this, callfunc_selector(OneLifeEffectLayer::removeMe));

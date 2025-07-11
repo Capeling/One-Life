@@ -1,24 +1,18 @@
 #pragma once
 #include <Geode/cocos/actions/CCActionInterval.h>
 
-/*
-Taken from https://github.com/undefined06855/Rewind with permission from undefined
-Thank you goat
-*/
-
 enum class FadeMusicDirection {
-    FadeIn, FadeOut
+    None, FadeIn, FadeOut
 };
 
 class FadeMusicAction : public cocos2d::CCActionInterval {
     FadeMusicAction();
 public:
-    static FadeMusicAction* create(float d, FadeMusicDirection dir);
-    static FadeMusicAction* create(float d, FadeMusicDirection dir, const std::unordered_map<int, float>& targetPitches);
-    bool init(float d, FadeMusicDirection dir, const std::unordered_map<int, float>& targetPitches);
+    static FadeMusicAction* create(float d, FadeMusicDirection dir, bool sfx = true);
+    bool init(float d, FadeMusicDirection dir, bool sfx);
 
-    FadeMusicDirection m_dir;
-    std::unordered_map<int, float> m_initialOrTargetPitches;
+    FadeMusicDirection m_dir = FadeMusicDirection::None;
+    bool m_sfx = false;
 
     void update(float time);
 };

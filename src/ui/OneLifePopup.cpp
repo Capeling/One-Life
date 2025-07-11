@@ -2,6 +2,7 @@
 #include <ui/OneLifeEffectLayer.hpp>
 #include <OneLifeManager.hpp>
 #include <OneLifeConstants.hpp>
+#include <BuildConstants.hpp>
 
 OneLifePopup* OneLifePopup::create() {
     auto ret = new OneLifePopup();
@@ -29,17 +30,6 @@ bool OneLifePopup::setup() {
     m_statLabel->setAlignment(cocos2d::CCTextAlignment::kCCTextAlignmentCenter);
     m_statLabel->setScale(0.6f);
     m_mainLayer->addChildAtPosition(m_statLabel, geode::Anchor::Center, ccp(0, 17));
-    
-    // m_statArea = TextArea::create(running ? olm->getCurrentStatString() : olm->getBestStatString(),
-    //     "bigFont.fnt",
-    //     0.6f,
-    //     250,
-    //     { 0.5f, 0.5f },
-    //     25,
-    //     false
-    // );
-    // m_statArea->setScale(0.6f);
-    // m_mainLayer->addChildAtPosition(m_statArea, geode::Anchor::Center, ccp(0, 17));
 
     m_runStateLabel = cocos2d::CCLabelBMFont::create(
         running ? OneLifeConstants::POPUP_IN_RUN : OneLifeConstants::POPUP_NOT_IN_RUN,
@@ -57,8 +47,6 @@ bool OneLifePopup::setup() {
     );
     m_buttonMenu->addChildAtPosition(m_startBtn, geode::Anchor::Bottom, ccp(0, 67));
 
-    // FLAlertLayerProtocol* delegate, char const* title, gd::string desc, char const* btn1, char const* btn2, float width, bool scroll, float height, float textScale
-
     m_infoBtn = geode::cocos::CCMenuItemExt::createSpriteExtraWithFrameName(
         OneLifeConstants::SPRITE_INFO,
         0.8f,
@@ -70,8 +58,8 @@ bool OneLifePopup::setup() {
 
     std::string versionString = fmt::format("{}\n{}\n{}",
         geode::Mod::get()->getVersion().toVString().c_str(),
-        OneLifeConstants::MOD_COMMIT,
-        OneLifeConstants::MOD_BUILD_TYPE
+        BuildConstants::MOD_COMMIT,
+        BuildConstants::MOD_BUILD_TYPE
     );
 
     m_versionLabel = cocos2d::CCLabelBMFont::create(versionString.c_str(), "chatFont.fnt");
@@ -111,37 +99,6 @@ bool OneLifePopup::setup() {
     );
     m_buttonMenu->addChildAtPosition(instantBtn, geode::Anchor::Bottom, ccp(45, 67));
 #endif
-
-    // auto size = cocos2d::CCSize{300.f, 60.f};
-    // auto bg = cocos2d::extension::CCScale9Sprite::create("square02b_001.png");
-    // bg->setColor({0,0,0});
-    // bg->setOpacity(100);
-    // bg->setContentSize(size);
-    
-    // auto msg = CCTextInputNode::create(size.width, size.height - 10.f, "Message (optional)", "Thonburi", 24, 0);
-    // msg->setMaxLabelLength(1000);
-    // msg->addTextArea(TextArea::create("", "chatFont.fnt", 1.f, size.width - 40.0f, {0.5, 0.5}, 25.0f, true));
-    // msg->m_isChatFont = true;
-    // msg->setUserObject("fix-text-input", cocos2d::CCBool::create(true));
-    
-    // m_mainLayer->addChildAtPosition(bg, geode::Anchor::Center);
-    // m_mainLayer->addChildAtPosition(msg, geode::Anchor::Center);
-
-    // bool isLevelInfoActive = false;
-
-    // LevelInfoLayer* levelInfoLayer = nullptr;
-
-    // auto scene = cocos2d::CCScene::get();
-    // for (int i = 0; i < scene->getChildrenCount(); i++) {
-    //     geode::log::debug("aaaa");
-    //     auto node = scene->getChildren()->objectAtIndex(i);
-
-    //     if (auto levelInfoNode = geode::cast::typeinfo_cast<LevelInfoLayer*>(node)) {
-    //         isLevelInfoActive = true;
-    //         levelInfoLayer = levelInfoNode;
-    //         break;
-    //     }
-    // }
     
     return true;
 }

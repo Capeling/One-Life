@@ -1,0 +1,9 @@
+#ifndef __BUILD_CONSTANTS_HPP__
+#define __BUILD_CONSTANTS_HPP__
+
+struct BuildConstants {
+    static constexpr const char* MOD_COMMIT = "@ONELIFE_COMMIT_HASH@";
+    static constexpr const char* MOD_BUILD_TYPE = "@CMAKE_BUILD_TYPE@";
+};
+
+#endif /* __BUILD_CONSTANTS_HPP__ */

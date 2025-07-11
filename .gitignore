@@ -64,4 +64,4 @@ build-*/
 /cmake-build-*/
 
 # Codegenned files
-src/OneLifeConstants.hpp
+src/BuildConstants.hpp

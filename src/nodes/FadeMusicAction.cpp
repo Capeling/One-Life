@@ -1,18 +1,13 @@
 #include "FadeMusicAction.hpp"
+#include <Geode/binding/FMODAudioEngine.hpp>
 #include <Geode/fmod/fmod_errors.h>
 
-/*
-Taken from https://github.com/undefined06855/Rewind with permission from undefined
-Thank you goat
-*/
-
 FadeMusicAction::FadeMusicAction()
-    : m_dir(FadeMusicDirection::FadeOut)
-    , m_initialOrTargetPitches({}) {}
+    : m_dir(FadeMusicDirection::FadeOut) {}
 
-FadeMusicAction* FadeMusicAction::create(float d, FadeMusicDirection dir, const std::unordered_map<int, float>& targetPitches) {
+FadeMusicAction* FadeMusicAction::create(float d, FadeMusicDirection dir, bool sfx) {
     auto ret = new FadeMusicAction;
-    if (ret->init(d, dir, targetPitches)) {
+    if (ret->init(d, dir, sfx)) {
         ret->autorelease();
         return ret;
     }
@@ -21,30 +16,12 @@ FadeMusicAction* FadeMusicAction::create(float d, FadeMusicDirection dir, const 
     return nullptr;
 }
 
-FadeMusicAction* FadeMusicAction::create(float d, FadeMusicDirection dir) {
-    return FadeMusicAction::create(d, dir, {});
-}
-
-bool FadeMusicAction::init(float d, FadeMusicDirection dir, const std::unordered_map<int, float>& targetPitches) {
+bool FadeMusicAction::init(float d, FadeMusicDirection dir, bool sfx) {
     if (!CCActionInterval::initWithDuration(d)) return false;
 
     m_dir = dir;
-
-    // if direction is fade out, initialOrTarget stores initial
-    // if direction is fade in, initialOrTarget stores target
-    if (dir == FadeMusicDirection::FadeOut) {
-        for (auto& [id, thing] : FMODAudioEngine::get()->m_fmodMusic) {
-            auto channel = FMODAudioEngine::get()->getActiveMusicChannel(id);
-            m_initialOrTargetPitches[id] = 0.f;
-            channel->getPitch(&m_initialOrTargetPitches[id]);
-        }
-    } else {
-        m_initialOrTargetPitches = /* (copy) */ targetPitches;
-    }
-
-    // just in case
-    FMODAudioEngine::get()->stopAllActions();
-
+    m_sfx = sfx;
+    
     return true;
 }
 
@@ -57,18 +34,7 @@ void FadeMusicAction::update(float time) {
         eased = 1.f - std::sqrt(1.f - std::pow(time - 1.f, 2.f));
     }
 
-    // really fucking brute force way of doing this but it does work
-    // multiplying by initialOrTargetPitches works here because the curve curves
-    // from either 0 to target (fade in) or initial to 0 (fade out), and since
-    // the curve fits into 0 - 1 in the y axis, multiplying will scale it from
-    // 0 to initial or target
-    // just plug it into desmos or something
-    for (auto& [id, thing] : FMODAudioEngine::get()->m_fmodMusic) {
-        auto channel = FMODAudioEngine::get()->getActiveMusicChannel(id);
-        float multipliedEased = eased * m_initialOrTargetPitches[id];
-        channel->setPitch(multipliedEased);
-    }
-
-    // setting m_globalChannel's pitch seems to work but seems to be overridden
-    // by every channel individually
+    auto engine = FMODAudioEngine::get();
+    engine->m_backgroundMusicChannel->setPitch(eased); // music
+    if (m_sfx) engine->m_globalChannel->setPitch(eased); // sfx
 }

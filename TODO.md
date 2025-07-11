@@ -3,8 +3,8 @@
 ## Important (Before Release Changes)
 - ~~Better PlayLayer exiting~~
 - Way to show the player that they earned stats for the run
-- Mod icon
-- About
+- ~~Mod icon~~
+- ~~About~~
 
 ## Semi-Important (Not Needed Before Release)
 - Custom textures

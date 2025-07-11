@@ -14,12 +14,6 @@ protected:
     bool m_firstBootup;
     bool m_hasDied;
 
-    // int m_collectedStars;
-    // int m_collectedMoons;
-    // int m_collectedOrbs;
-    // int m_collectedDiamonds;
-    // int m_completedDemons;
-
     std::vector<int> m_completedIDS = {};
 
     std::vector<int> m_currentRun = {};
@@ -27,7 +21,6 @@ protected:
 
     float m_currentExp;
     
-
     RunType m_runType;
 
     bool m_fromStartedRun;

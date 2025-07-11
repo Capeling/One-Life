@@ -97,7 +97,7 @@ void OneLifeManager::giveStatsFromLevel(GJGameLevel* level) {
         incrementOrbs(gsm->getBaseCurrencyForLevel(level));
 
         if (level->m_demon.value() > 0)
-            incrementDemons(level->getAverageDifficulty() * level->m_demon.value());
+            incrementDemons((level->getAverageDifficulty() * level->getAverageDifficulty()) * level->m_demon.value());
     }
 
     m_currentExp = calculateExp(m_currentRun[0], m_currentRun[1], m_currentRun[2], m_currentRun[3], m_currentRun[4]);
@@ -139,8 +139,6 @@ void OneLifeManager::playerDied() {
 }
 
 float OneLifeManager::calculateExp(int stars, int moons, int orbs, int diamonds, int demons) {
-    auto mod = geode::Mod::get();
-    
     float exp = 0.f;
 
     exp += stars * 0.1f;
@@ -155,14 +153,14 @@ float OneLifeManager::calculateExp(int stars, int moons, int orbs, int diamonds,
 void OneLifeManager::saveBestRun() {
     if (m_bestRun.size() == 0) {
         m_bestRun = m_currentRun;
-    } else {
-        int i = 0;
-        for (int val : m_bestRun) {
-            if (val < m_currentRun[i])
-                m_bestRun[i] = m_currentRun[i];
-            i++;
-        }
+        return;
     }
+
+    float currentExp = calculateExp(m_currentRun[0], m_currentRun[1], m_currentRun[2], m_currentRun[3], m_currentRun[4]);
+    float bestExp = calculateExp(m_bestRun[0], m_bestRun[1], m_bestRun[2], m_bestRun[3], m_bestRun[4]);
+    
+    if (currentExp > bestExp)
+        m_bestRun = m_currentRun;
 }
 
 void OneLifeManager::writeSaveData() {

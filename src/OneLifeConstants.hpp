@@ -30,7 +30,7 @@ struct OneLifeConstants {
     static constexpr const char* SPRITE_INFO = "GJ_infoIcon_001.png";
     static constexpr const char* SPRITE_END = "GJ_starBtn2_001.png";
     
-    static constexpr const char* ERROR_INVALID_EFFECT = "Invalid effect, something has gone horribly wrong!\nContact Capeling on discord for help.";
+    static constexpr const char* ERROR_INVALID_EFFECT = "Invalid effect, something has gone horribly wrong!\nContact @capeling on discord for help.";
     static constexpr const char* ERROR_UNKNOWN_NODE = "Failed to get \'{}\'.";
     
     static constexpr int SFX_START = 566;
@@ -42,7 +42,4 @@ struct OneLifeConstants {
     
     static constexpr int COUNTDOWN_START = 3;
     static constexpr int MAX_END_TIME = 3;
-
-    static constexpr const char* MOD_COMMIT = "@ONELIFE_COMMIT_HASH@";
-    static constexpr const char* MOD_BUILD_TYPE = "@CMAKE_BUILD_TYPE@";
 };
